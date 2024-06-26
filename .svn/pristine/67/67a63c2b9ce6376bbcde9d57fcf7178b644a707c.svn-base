@@ -1,0 +1,94 @@
+<?php
+class BuildingModel {
+    private $id;
+    private $name;
+    private $address;
+    private $doctor_id;
+  
+    public function __construct($id, $name, $address, $doctor_id) {
+      $this->id = $id;
+      $this->name = $name;
+      $this->address = $address;
+      $this->doctor_id = $doctor_id;
+    }
+
+    public function getId() {
+      return $this->id;
+    }
+  
+    public function getName() {
+      return $this->name;
+    }
+  
+    public function getAddress() {
+      return $this->address;
+    }
+  
+    public function getDoctor_id() {
+      return $this->doctor_id;
+    }
+  
+    public function setId($id) {
+      $this->id = $id;
+    }
+  
+    public function setName($name) {
+      $this->name = $name;
+    }
+  
+    public function setAddress($address) {
+      $this->address = $address;
+    }
+  
+    public function setDoctor_id($doctor_id) {
+      $this->doctor_id   = $doctor_id;
+    }
+    public function create(BuildingModel $building) {
+      $data= [
+        "id"=>$building->getId(),
+        "name"=> $building->getName(),
+        "address"=> $building->getAddress(),
+        "doctor_id"=> $building->getDoctor_id(),
+      ];
+      
+      $db = new Database();
+      $db->create("dbo.Building", $data);
+    }
+    public function update(BuildingModel $building, $condition){
+      $data= [
+        "id"=>$building->getId(),
+        "name"=> $building->getName(),
+        "address"=> $building->getAddress(),
+        "doctor_id"=> $building->getDoctor_id(),
+      ];
+      $db = new Database();
+      $db->update("dbo.Building", $data, $condition);
+    }
+    public function delete($condition){
+      $db = new Database();
+      $db->delete("dbo.Building", $condition);
+    }
+    public static function getAllBuilding(){
+      $buildings = [];
+      $sql = "select * from dbo.Building;";
+      $db = new Database();
+      $result = $db->query($sql);
+      foreach($result as $row){
+       $building = new BuildingModel($row['id'], $row['name'], $row['address'], $row['doctor_id']);
+       $buildings[] = $building;
+      }
+      return $buildings;
+    }
+    public function getBuildingById($id){
+      $sql = "select * from dbo.Building where id ='".$id."';";
+      $db = new Database();
+      $result = $db->query($sql);
+      foreach($result as $row){
+        $building = new BuildingModel($row['id'], $row['name'], $row['address'], $row['doctor_id']);
+       }
+      return $building;
+    }
+
+  }
+
+  

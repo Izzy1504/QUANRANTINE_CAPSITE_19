@@ -1,0 +1,85 @@
+.flex-col
+{
+    display: flex ;
+    justify-content: space-between;
+}
+.butt
+{   
+    
+    width : 100px;
+
+}
+
+
+        /* Định nghĩa các class CSS cho từng trường thông tin */
+        .unique-number { font-weight: bold; }
+        .full-name { text-transform: uppercase; }
+        .identity-number { color: #666; }
+        .phone { text-decoration: underline; }
+        .gender { color: #00f; }
+        .address { font-style: italic; }
+        .comorbidities { font-weight: bold; color: #f00; }
+        .symptoms { color: #ff7f00; }
+        .admission { background-color: #e0e0e0; }
+        .location-history { background-color: #c0c0c0; }
+        .discharge-date { color: #0f0; }
+
+        /* Định nghĩa các quy tắc CSS để thêm khoảng cách giữa các ô trong bảng */
+        .table_patient {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .th_patient, .td_patient {
+            text-align: center;
+            vertical-align: middle;
+            padding: 10px;
+        }
+        .footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            width: 100%;
+            
+        }
+
+        .nav-footer {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item {
+            margin-right: 10px;
+        } 
+        .more-info-button {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            margin: 4px 2px;
+            cursor: pointer;
+        }
+       
+          
+          
+        .pagination {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+          }
+          
+          .page-item {
+    margin: 0 5px; 
+  }
+ 
+

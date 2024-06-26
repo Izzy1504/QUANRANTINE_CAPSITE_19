@@ -1,0 +1,26 @@
+<?php
+require_once 'app/models/PatientModel.php'; 
+
+$total_pages = ceil(count($data) / $records_per_page);
+
+// Hiển thị nút phân trang
+echo '<ul class="pagination">';
+if ($current_page > 1) {
+    echo '<li class="page-item"><a class="page-link" href="?page=' . ($current_page - 1) . '">Prev</a></li>';
+}
+
+$visible_page_links = 5; // Số trang hiển thị tối đa
+$half_visible = floor($visible_page_links / 2);
+$start = max(1, $current_page - $half_visible);
+$end = min($total_pages, $start + $visible_page_links - 1);
+
+for ($i = $start; $i <= $end; $i++) {
+    echo '<li class="page-item' . ($i == $current_page ? ' active' : '') . '"><a class="page-link" href="?page=' . $i . '">' . $i . '</a></li>';
+}
+
+if ($current_page < $total_pages) {
+    echo '<li class="page-item"><a class="page-link" href="?page=' . ($current_page + 1) . '">Next</a></li>';
+}
+echo '</ul>';
+
+?>

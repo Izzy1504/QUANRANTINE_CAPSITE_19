@@ -1,0 +1,15 @@
+11/11/2023 22:30
+-update model/controller/view
+-login.php lỗi hiển thị
+12/11/2023 22:15
+update:
+create connection to database
+
+28/11/2023 21:30
+update:
+đã xong phân trang ajax
+
+29/11/2023 22:21
+update:
+- đã fix phân trang ajax (có thêm function vào PatientModel)
+- có page cho testing table (nhưng chưa link được)

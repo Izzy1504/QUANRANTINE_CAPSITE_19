@@ -1,0 +1,52 @@
+
+<?php
+
+class ComorbidityModel {
+    private $id;
+    private $name;
+  
+    public function __construct($id, $name) {
+      $this->id = $id;
+      $this->name = $name;
+    }
+  
+    public function getId() {
+      return $this->id;
+    }
+  
+    public function getName() {
+      return $this->name;
+    }
+  
+    public function setId($id) {
+      $this->id = $id;
+    }
+  
+    public function setName($name) {
+      $this->name = $name;
+    }
+    public static function getAllComorbidity(){
+      $data = [];
+      $sql = "select * from dbo.Comorbidity;";
+      $db = new Database();
+      $result = $db->query($sql);
+      foreach($result as $row){
+        $com = new ComorbidityModel($row['id'], $row['name']);
+        $data[] = $com;}
+      return $data;
+     }
+     public function create(ComorbidityModel $comorbidity){
+      $data = [
+        "id"=>$comorbidity->getId(),
+        "name"=>$comorbidity->getName(),
+      ];
+      $db = new Database();
+      $db->create('dbo.Comorbidity', $data);
+     }
+
+     public static function countRows(){
+      $db = new Database();
+      return $db->countRows('dbo.Comorbidity');
+     }
+  }
+  

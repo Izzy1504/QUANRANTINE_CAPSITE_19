@@ -1,0 +1,81 @@
+<?php
+class PatientHistoryLocationModel {
+    private $patientId;
+    private $roomId;
+    private $dateAdmitted;
+    private $dateDischarged;
+  
+    public function __construct($patientId, $roomId, $dateAdmitted, $dateDischarged) {
+      $this->patientId = $patientId;
+      $this->roomId = $roomId;
+
+      $this->dateAdmitted = $dateAdmitted;
+      $this->dateDischarged = $dateDischarged;
+    }
+  
+    public function getPatientId() {
+      return $this->patientId;
+    }
+  
+    public function getRoomId() {
+      return $this->roomId;
+    }
+  
+
+  
+    public function getDateAdmitted() {
+      return $this->dateAdmitted;
+    }
+  
+    public function getDateDischarged() {
+      return $this->dateDischarged;
+    }
+  
+    public function setPatientId($patientId) {
+      $this->patientId = $patientId;
+    }
+  
+    public function setRoomId($roomId) {
+      $this->roomId = $roomId;
+    }
+  
+  
+    public function setDateAdmitted($dateAdmitted) {
+      $this->dateAdmitted = $dateAdmitted;
+    }
+  
+    public function setDateDischarged($dateDischarged) {
+      $this->dateDischarged = $dateDischarged;
+    }
+    public static function getPHLById($id){
+      $data = [];
+      $sql = "select * from dbo.PatientHistoryLocation where patient_id ='".$id."';";
+      $db = new Database();
+      $result = $db->query($sql);
+      foreach($result as $row){
+       $phl = new PatientHistoryLocationModel($row['patient_id'], $row['room_id'], $row['Date_admitted'], $row['Date_discharge']);
+      $data[] = $phl;
+      }
+      return $data;
+    }
+
+    public static function create(PatientHistoryLocationModel $phl){
+      $data = [
+        "patient_id"=>$phl->getPatientId(),
+        "room_id"=>$phl->getRoomId(),
+        "Date_admitted"=>$phl->getDateAdmitted(),
+        "Date_discharge"=>$phl->getDateDischarged(),
+      ];
+      $db = new Database();
+      $db->create('PatientHistoryLocation', $data);
+    }
+    // public static function getPlaceById($id){
+    //   $sql = "SELECT room_id as fullName FROM dbo.PatientHistoryLocation where patient_id='".$id."' and Date_discharge is null ";
+    //   echo $sql;
+     
+    //       $db = new Database();
+    //       $results = $db->query($sql);
+    //       return $results;
+    // }
+  }
+  

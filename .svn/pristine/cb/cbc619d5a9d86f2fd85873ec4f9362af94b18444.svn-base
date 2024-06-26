@@ -1,0 +1,38 @@
+<?php
+$records_per_page = 20;
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+
+if (isset($_GET['page']) && is_numeric($_GET['page'])) {
+    $page = $_GET['page'];
+} else {
+    $page = 1;
+}
+
+$offset = ($current_page - 1) * $records_per_page;
+function encodeID($id) {
+    return base64_encode($id);
+}
+
+foreach ($data as $index => $patient) {
+    if ($index >= $offset && $index < ($offset + $records_per_page)) {
+        ?>
+        <tr>
+            <td class="unique_number td_patient"><?php echo $patient->getUniqueNumber()?></td>
+            <td class="full-name td_patient"><?php echo $patient->getFirstName()." ".$patient->getLastName()?></td>
+            <td class="phone td_patient"><?php echo $patient->getPhone()?></td>
+            <td class="gender td_patient"><?php echo $patient->getGender()?></td>
+            <td class="address td_patient"><?php echo $patient->getAddress()?></td>
+            <td class="adm td_patient">
+                <?php echo $patient->getDateAdmit() !== null ? $patient->getDateAdmit()->format('m/d/Y') : "null"; ?>
+            </td>
+            <td class="discharge-date td_patient">
+                <?php echo $patient->getDateDischarge() !== null ? $patient->getDateDischarge()->format('m/d/Y') : "null"; ?>
+            </td>
+            <td><a class="more-info-button td_patient" href="/CSDL2/patient/detail/?id=<?php echo encodeID($patient->getUniqueNumber()); ?>">More Info</a></td>
+           
+            <td><a class="test-button td_patient" href="/CSDL2/patient/test/?id=<?php echo encodeID($patient->getUniqueNumber()); ?>">Test results</a></td>
+        </tr>
+        <?php
+    }
+}
+?>

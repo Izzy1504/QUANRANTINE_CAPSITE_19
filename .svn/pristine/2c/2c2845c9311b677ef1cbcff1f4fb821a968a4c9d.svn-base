@@ -1,0 +1,137 @@
+<?php
+
+class DoctorModel {
+    private $unique_number;
+    private $id;
+    private $phone;
+    private $fname;
+    private $lname;
+    private $gender;
+    private $birthday;
+  
+    public function __construct($unique_number, $id, $phone, $fname, $lname, $gender, $birthday) {
+      $this->unique_number = $unique_number;
+      $this->id = $id;
+      $this->phone = $phone;
+      $this->fname = $fname;
+      $this->lname = $lname;
+      $this->gender = $gender;
+      $this->birthday = $birthday;
+    }
+
+    public function getUniqueNumber() {
+      return $this->unique_number;
+    }
+  
+    public function getId() {
+      return $this->id;
+    }
+  
+    public function getPhone() {
+      return $this->phone;
+    }
+  
+    public function getFname() {
+      return $this->fname;
+    }
+  
+    public function getLname() {
+      return $this->lname;
+    }
+  
+    public function getGender() {
+      return $this->gender;
+    }
+  
+    public function getBirthday() {
+      return $this->birthday;
+    }
+  
+    public function setUniqueNumber($uniqueNumber) {
+      $this->unique_number = $uniqueNumber;
+    }
+  
+    public function setId($id) {
+      $this->id = $id;
+    }
+  
+    public function setPhone($phone) {
+      $this->phone = $phone;
+    }
+  
+    public function setFname($firstName) {
+      $this->fname = $firstName;
+    }
+  
+    public function setLname($lastName) {
+      $this->lname = $lastName;
+    }
+  
+    public function setGender($gender) {
+      $this->gender = $gender;
+    }
+  
+    public function setBirthday($birthday) {
+      $this->birthday = $birthday;
+    }
+    public function create(DoctorModel $doctor){
+      $data = [
+        "unique_number" => $doctor->getUniqueNumber(),
+        "id" => $doctor->getId(),
+        "phone"=>$doctor->getPhone(),
+        "fName"=>$doctor->getFname(),
+        "lName"=>$doctor->getLname(),
+        "gender"=>$doctor->getGender(),
+        "birthday"=>$doctor->getBirthday(),
+      ];
+      $db = new Database();
+      $db->create("dbo.Doctor", $data);
+    }
+    public function update(DoctorModel $doctor, $condition){
+      $data = [
+        "unique_number" => $doctor->getUniqueNumber(),
+        "id" => $doctor->getId(),
+        "phone"=>$doctor->getPhone(),
+        "fName"=>$doctor->getFname(),
+        "lName"=>$doctor->getLname(),
+        "gender"=>$doctor->getGender(),
+        "birthday"=>$doctor->getBirthday(),
+      ];
+      $db = new Database();
+      $db->update("dbo.Doctor", $data, $condition);
+    }
+    public function delete($condition){
+      $db = new Database();
+      $db->delete("dbo.Doctor",$condition);
+    }
+    public function getDoctorById($id){
+      $sql = "select * from dbo.Doctor where unique_number ='".$id."';";
+      $db = new Database();
+      $result = $db->query($sql);
+      foreach($result as $row){
+        $Doctor = new DoctorModel($row["unique_number"], $row["id"], $row["phone"], $row["fname"], $row["lname"],$row["gender"], $row["birthday"]);
+      }
+      return $Doctor;
+     
+    }
+    public static function getAllDoctor(){
+      $Doctors = [];
+      $sql = "select * from dbo.Doctor;";
+      $db = new Database();
+      $result = $db->query($sql);
+      foreach($result as $row){
+        $Doctor = new DoctorModel($row["unique_number"], $row["id"], $row["phone"], $row["fname"], $row["lname"],$row["gender"], $row["birthday"]);
+        $Doctors[] = $Doctor;
+        
+      }
+      return $Doctors;
+    }
+    public static function getNameById($id){
+      $sql = "SELECT lname+ ' '+ fname as fullName FROM dbo.Doctor where unique_number='".$id."'";
+          $db = new Database();
+          $results = $db->query($sql);
+          return $results[0]['fullName'];
+    }
+  
+  }
+  

@@ -1,0 +1,23 @@
+<?php 
+class Home extends Controller{
+
+    public $model;
+    public function __construct(){
+        
+       $this->model('PatientModel');
+       $this->model('WarningModel');
+
+
+       
+    }
+    public function index(){
+       $data =[];
+       $data['p'] = PatientModel::CountRows();
+       $data['pd'] = PatientModel::PD();
+       $data['pw']= WarningModel::PW();
+       $data['warning'] = WarningModel::getAllWarning();
+
+        $this->render("home/index", $data);
+    }
+
+}

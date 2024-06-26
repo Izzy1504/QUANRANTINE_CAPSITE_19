@@ -1,0 +1,26 @@
+<?php 
+class Connection extends Controller{
+    private static $instance = null;
+    private Controller $controller;
+    public static function connection($config){
+        $serverName = $config["serverName"];
+        $database = $config["db"];
+        $uid = $config["uid"];
+        $pass = $config["pass"];
+        // $uid = '';
+        // $pass = '';
+
+        $connection = [
+            "Database" => $database
+            ,"Uid"=> $uid
+            ,"PWD"=> $pass
+        ];
+        $conn = sqlsrv_connect($serverName, $connection);
+        if ($conn === false) { 
+            require_once 'app/views/errors/database.php';
+            die(print_r(sqlsrv_errors(), true));
+        }
+        return $conn;
+    }
+
+}

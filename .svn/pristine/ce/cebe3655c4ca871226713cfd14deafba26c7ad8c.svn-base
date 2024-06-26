@@ -1,0 +1,65 @@
+table {
+    width: 100%;
+  }
+  
+  th {
+    text-align: center;
+  }
+  
+  td {
+      text-align: middle;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .patient-id { font-weight: bold; }
+          .spo2 { color: #00FF00; font-weight: bold; }
+          .result { color: #00f; font-weight: bold; }
+          .warnings-table {
+               margin-top: 20px; /* Điều chỉnh khoảng cách theo nhu cầu */
+  }
+  
+  /* Kẻ khung cho bảng */
+  .table {
+      border-collapse: collapse;
+      width: 100%;
+  }
+  
+  /* Kẻ khung cho toàn bộ bảng */
+  .table, .table th, .table td {
+      border: 1px solid #dee2e6;
+  }
+  
+  /* Thêm padding và căn giữa dữ liệu trong ô */
+  .table th, .table td {
+      padding: 8px;
+      text-align: center; /* Căn giữa dữ liệu trong ô theo chiều ngang */
+  }
+  
+  /* Căn giữa dữ liệu trong cột */
+  .table td {
+      border: 1px solid #dee2e6;
+      vertical-align: middle; /* Căn giữa dữ liệu trong ô theo chiều dọc */
+  }
+  h6 {
+      font-weight: bold; 
+      font-size: 1.5em; 
+  }
+  p{
+      font-weight: bold; 
+      font-size: 1.2em; 
+  }   
+  .form-control1 {
+      display: block;
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 400;
+      line-height: 1.4rem;
+      color: #495057;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid #d2d6da;
+      appearance: none;
+      border-radius: 0.5rem;
+      transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  }

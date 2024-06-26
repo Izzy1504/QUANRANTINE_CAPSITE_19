@@ -1,0 +1,13 @@
+<?php
+class Room extends Controller{
+    public $model;
+    public function __construct(){
+        
+       $this->model('RoomModel');
+    }
+    public function index(){
+        $data =[];
+        $data['room'] = RoomModel::getAllRoom();
+        $this->render("room/room", $data);
+    }
+}

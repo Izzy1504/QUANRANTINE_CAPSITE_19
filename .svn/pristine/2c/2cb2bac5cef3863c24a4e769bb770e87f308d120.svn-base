@@ -1,0 +1,83 @@
+<?php   
+include "app/controllers/Account.php";
+class Patient extends Controller{
+    private $account;
+    public function __construct(){
+        $this->account = new Account();
+        $this->model('PatientModel');
+        $this->model('PatientSymptomModel');
+        $this->model('PatientComorbidityModel');
+        $this->model('PCRTestModel');
+        $this->model('QuickTestModel');
+        $this->model('SPO2TestModel');
+        $this->model('RespiratoryRateTestModel');
+        $this->model('WarningModel');
+        $this->model('TreatmentModel');
+        $this->model('RoomModel');
+        $this->model('PatientHistoryLocationModel');
+        
+        
+     }
+     public function index(){
+        
+     }
+    
+    public function list1(){
+         // Kiểm tra đăng nhập khi hàm index được gọi
+       if (!$this->account->isLoggedIn()) {
+        // Nếu chưa đăng nhập, chuyển hướng đến trang đăng nhập
+        header("Location: ./account");
+        exit();
+    }
+        $Patients = PatientModel::getAllPatient();
+        $this->render('patients/patient', $Patients);
+    }
+    public function test(){
+        $data = [];
+        $id = base64_decode($_REQUEST['id']);
+        $data['PCR'] =  PCRTestModel::getPCRById($id);
+        $data['QUICK'] =  QuickTestModel::getQuickById($id);
+        $data['SPO2'] =  SPO2TestModel::getSPO2ById($id);
+        $data['RR'] =  RespiratoryRateTestModel::getRRById($id);
+        $this->render('patients/test_table',$data);
+    }
+    public function detail(){
+        $data = [];
+        $id = base64_decode($_REQUEST['id']);
+        // $result = PatientModel::getPatientById('PT00001');
+        // //$result = PatientModel::getPatientById();
+        // echo '<pre>';
+        // print_r($result);
+        // echo '</pre>';
+        // $placeCurrent = PatientHistoryLocationModel::getPlaceById($id);
+        // $data['pc'] = RoomModel::getRoomById($placeCurrent);
+        $data['patient'] = PatientModel::getPatientById($id);
+        $data['symptom'] = PatientSymptomModel::getPatientSymptomById($id);
+        $data['comorbidity'] = PatientComorbidityModel::getPatientComorbidityById($id);
+        $data['PCR'] =  PCRTestModel::getPCRById($id);
+        $data['QUICK'] =  QuickTestModel::getQuickById($id);
+        $data['SPO2'] =  SPO2TestModel::getSPO2ById($id);
+        $data['RR'] =  RespiratoryRateTestModel::getRRById($id);
+        $data['warning'] = WarningModel::getWarningById($id);
+        $data['treatment'] = TreatmentModel::getTreatmentById($id);
+        $data['phl'] = PatientHistoryLocationModel::getPHLById($id);
+
+        $this->render('patients/detail',$data);
+    }
+    
+    public function search() {
+    $data = [];
+    $base_url = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on' ? 'https' : 'http' ) . '://' .  $_SERVER['HTTP_HOST'];
+    $url = $base_url . $_SERVER["REQUEST_URI"];
+    
+    
+    // $search = $_REQUEST('search');
+    // $option = $_REQUEST('options');
+    parse_str(parse_url($url)['query'], $params);
+    $search = $params['search'];
+    $option = $params['options'];
+      $data = PatientModel::search($search,$option);
+      $this->render('patients/patient', $data);
+  }
+}
+  

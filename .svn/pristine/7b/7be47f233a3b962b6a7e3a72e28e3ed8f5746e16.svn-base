@@ -1,0 +1,60 @@
+/* table {
+    border-collapse: collapse;
+    width: 100%;
+} */
+/* Định dạng viền cho th và td */
+/* th {
+    border: 1px solid #ccc; 
+    padding: 10px;
+    text-align: center;
+} 
+
+td input {
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 5px;
+}
+td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+    white-space: normal; 
+} */
+.container-fluid {
+    padding: 0px;
+}
+
+.table {
+    width: 100%; /* Sử dụng toàn bộ chiều rộng của container */
+}
+
+
+th, td {
+    padding: 5px; /* Điều chỉnh giá trị padding cho th và td tùy ý */
+    white-space: normal;
+    font-family: Arial, sans-serif; /* Đổi font chữ theo ý muốn */
+    font-size: 14px; /* Đổi kích thước font */
+    color: #333; /* Màu chữ theo ý muốn */
+    
+}
+
+td input {
+    padding: 5px; /* Điều chỉnh giá trị padding cho ô input tùy ý */
+}
+.text-wrap {
+    overflow-wrap: break-word;
+    max-width: 100%; /* Đặt độ rộng tối đa cho văn bản trước khi xuống dòng */
+}
+
+.title {    
+    width: 100%;
+    background-color: rgba(73,81,117,255);
+    color: white;
+    margin: 10px 0 20px 0;
+    text-align: center;
+}
+
+.list-group-item {
+    width: 80%;
+    display: flex;
+}

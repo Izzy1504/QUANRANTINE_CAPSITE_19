@@ -1,0 +1,66 @@
+<?php
+include "app/models/AccountModel.php";
+
+class Account extends Controller {
+    
+    private $accountModel;
+
+    public function index() {
+        // Display the login form
+        include 'app/views/account/login.php';
+    }
+
+    public function __construct() {
+        // Do not instantiate AccountModel here
+        // Move it to the login() method
+    }
+
+    public function login() {
+        // Check if the form is submitted
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Sanitize user input
+            $phone = htmlspecialchars($_POST['phone']);
+            $password = htmlspecialchars($_POST['password']);
+            $role = 'admin'; // Set the role as needed
+    
+            try {
+                // Instantiate the model here, after sanitizing input
+                $this->accountModel = new AccountModel($phone,$password,$role);
+                
+    
+                // Call the login method from the model
+                $loggedIn = $this->accountModel->login();
+                var_dump($loggedIn);
+                if ($loggedIn) {
+                    // Redirect the user to the desired page after successful login
+                    header("Location: ../");
+                    exit(); // Ensure no further output is sent after the header
+                } else {
+                    // Display an error message using JavaScript
+                    echo "<script>alert('Invalid phone number or password.'); window.location.href='/CSDL2/account';</script>";
+                }
+            } catch (Exception $e) {
+                echo "Error during login: " . $e->getMessage();
+                echo "Trace: " . $e->getTraceAsString();
+            }
+        } else {
+            // If the form is not submitted, redirect to the login page
+            header("Location: /account/index");
+        }
+    }
+    
+    
+    
+    
+
+    public function logout() {
+        try {
+            // Call the logout method from the model
+            $this->accountModel->logout();
+            echo "Logout successful!";
+        } catch (Exception $e) {
+            echo "Error during logout: " . $e->getMessage();
+        }
+    }
+}
+?>

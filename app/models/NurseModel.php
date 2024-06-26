@@ -1,0 +1,135 @@
+<?php
+class NurseModel {
+    private $uniqueNumber;
+    private $id;
+    private $phone;
+    private $firstName;
+    private $lastName;
+    private $gender;
+    private $birthday;
+  
+    public function __construct($uniqueNumber, $id, $phone, $firstName, $lastName, $gender, $birthday) {
+      $this->uniqueNumber = $uniqueNumber;
+      $this->id = $id;
+      $this->phone = $phone;
+      $this->firstName = $firstName;
+      $this->lastName = $lastName;
+      $this->gender = $gender;
+      $this->birthday = $birthday;
+    }
+  
+    public function getUniqueNumber() {
+      return $this->uniqueNumber;
+    }
+  
+    public function getId() {
+      return $this->id;
+    }
+  
+    public function getPhone() {
+      return $this->phone;
+    }
+  
+    public function getFname() {
+      return $this->firstName;
+    }
+  
+    public function getLname() {
+      return $this->lastName;
+    }
+  
+    public function getGender() {
+      return $this->gender;
+    }
+  
+    public function getBirthday() {
+      return $this->birthday;
+    }
+  
+    public function setUniqueNumber($uniqueNumber) {
+      $this->uniqueNumber = $uniqueNumber;
+    }
+  
+    public function setId($id) {
+      $this->id = $id;
+    }
+  
+    public function setPhone($phone) {
+      $this->phone = $phone;
+    }
+  
+    public function setFirstName($firstName) {
+      $this->firstName = $firstName;
+    }
+  
+    public function setLastName($lastName) {
+      $this->lastName = $lastName;
+    }
+  
+    public function setGender($gender) {
+      $this->gender = $gender;
+    }
+  
+    public function setBirthday($birthday) {
+      $this->birthday = $birthday;
+    }
+    public function create(NurseModel $Nurse){
+      $data = [
+        "unique_number" => $Nurse->getUniqueNumber(),
+        "id" => $Nurse->getId(),
+        "phone"=>$Nurse->getPhone(),
+        "fName"=>$Nurse->getFname(),
+        "lName"=>$Nurse->getLname(),
+        "gender"=>$Nurse->getGender(),
+        "birthday"=>$Nurse->getBirthday(),
+      ];
+      $db = new Database();
+      $db->create("dbo.Nurse", $data);
+    }
+    public function update(NurseModel $Nurse, $condition){
+      $data = [
+        "unique_number" => $Nurse->getUniqueNumber(),
+        "id" => $Nurse->getId(),
+        "phone"=>$Nurse->getPhone(),
+        "fName"=>$Nurse->getFname(),
+        "lName"=>$Nurse->getLname(),
+        "gender"=>$Nurse->getGender(),
+        "birthday"=>$Nurse->getBirthday(),
+      ];
+      $db = new Database();
+      $db->update("dbo.Nurse", $data, $condition);
+    }
+    public function delete($condition){
+      $db = new Database();
+      $db->delete("dbo.Nurse",$condition);
+    }
+    public function getNurseById($id){
+      $sql = "select * from dbo.Nurse where unique_number ='".$id."';";
+      $db = new Database();
+      $result = $db->query($sql);
+      foreach($result as $row){
+        $Nurse = new NurseModel($row["unique_number"], $row["id"], $row["phone"], $row["fname"], $row["lname"],$row["gender"], $row["birthday"]);
+      }
+      return $Nurse;
+     
+    }
+    public static function getAllNurse(){
+      $Nurses = [];
+      $sql = "select * from dbo.Nurse;";
+      $db = new Database();
+      $result = $db->query($sql);
+      foreach($result as $row){
+        $Nurse = new NurseModel($row["unique_number"], $row["id"], $row["phone"], $row["fname"], $row["lname"],$row["gender"], $row["birthday"]);
+        $Nurses[] = $Nurse;
+      }
+      return $Nurses;
+    }
+    public static function getNameById($id){
+      $sql = "SELECT lname+ ' '+ fname as fullName FROM dbo.Nurse where unique_number='".$id."'";
+          $db = new Database();
+          $results = $db->query($sql);
+          return $results[0]['fullName'];
+    }
+  
+  }
+  

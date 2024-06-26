@@ -1,0 +1,244 @@
+<div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+    <!-- đây là đoạn css cho search advance hay còn gọi là modal -->
+    <style>
+        .modal {
+            display: none;
+            /* Đặt mặc định modal không hiển thị */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+            /* display: flex; */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            width: 300px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+        /* Đặt vị trí của biểu tượng cog ở phía bên trái */
+.advanced-search-icon-left {
+    cursor: pointer;
+    margin-right: 15px; /* Điều chỉnh khoảng cách giữa biểu tượng và thanh search */
+}
+
+    </style>
+
+
+
+
+    <!-- icon search sẽ nằm đây -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <!-- Thanh tìm kiếm -->
+            <div class="search-container">
+                <input type="text" class="form-control search" id="searchInput" placeholder="Search...">
+            </div>
+            <br>
+            <!-- Hiển thị các tùy chọn đã chọn phía trên -->
+            <div class="selected-options" id="selectedOptions"></div>
+            <br>
+            <!-- Các tùy chọn sẽ được hiển thị ở đây -->
+<div class="col-md-6">
+            <label for="option1">
+                <input type="radio" checked="checked"    id="option1" name="option1" value="fname"> Tên BN
+            </label>
+</div>
+<div class="col-md-6">
+            <label for="option2">
+                <input type="radio" id="option2" name="option1" value="unique_number"> Mã BN
+            </label>
+</div>
+
+
+        </div>
+    </div>
+
+    <div class="ms-md-auto pe-md-3 d-flex align-items-center search">
+    <div class="input-group">
+        <span class="input-group-text text-body search-icon">
+            <i class="fas fa-search" aria-hidden="true"></i>
+        </span>
+        <input type="text" class="form-control search" id="searchInputMain" placeholder="Type here...">
+    </div>
+</div>
+
+<!-- Biểu tượng cog ở phía bên trái -->
+<span class="input-group-text text-body advanced-search-icon-left" id="advancedSearchIcon">
+    <i class="fas fa-cog" aria-hidden="true"></i>
+</span>
+
+<script>
+    const advancedSearchIcon = document.getElementById("advancedSearchIcon");
+    const modal = document.getElementById("myModal");
+    const searchInput = document.getElementById("searchInput");
+    const selectedOptions = document.getElementById("selectedOptions");
+    const modalContent = modal.querySelector(".modal-content");
+    const radios = modal.querySelectorAll("input[type='radio']");
+
+    advancedSearchIcon.addEventListener("click", () => {
+        modal.style.display = "flex";
+        const modalWidth = modal.offsetWidth;
+        const modalHeight = modal.offsetHeight;
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        const leftPosition = (screenWidth - modalWidth) / 2 + "px";
+        const topPosition = (screenHeight - modalHeight) / 2 + "px";
+        modal.style.left = leftPosition;
+        modal.style.top = topPosition;
+
+        radios.forEach((radio) => {
+            radio.checked = false;
+        });
+        document.getElementById("option1").checked = true;
+
+        updateSelectedOptions();
+
+        searchInput.value = "";
+
+        const rows = modalContent.querySelectorAll(".row");
+        rows.forEach((row) => {
+            row.style.display = "flex";
+        });
+    });
+
+    document.querySelector(".close").addEventListener("click", () => {
+        modal.style.display = "none";
+        radios.forEach((radio) => {
+            radio.checked = false;
+        });
+        updateSelectedOptions();
+        searchInput.value = "";
+        const rows = modalContent.querySelectorAll(".row");
+        rows.forEach((row) => {
+            row.style.display = "flex";
+        });
+    });
+
+    searchInput.addEventListener("input", () => {
+        const searchText = searchInput.value.toLowerCase();
+        radios.forEach((radio) => {
+            const radioLabel = radio.parentElement.textContent.toLowerCase();
+            const radioRow = radio.closest(".row");
+            if (radioLabel.includes(searchText)) {
+                radioRow.style.display = "flex";
+            } else {
+                radioRow.style.display = "none";
+                radio.checked = false;
+            }
+        });
+        updateSelectedOptions();
+    });
+
+    searchInput.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            const searchText = searchInput.value.toLowerCase();
+            const selectedOptions = Array.from(radios)
+                .filter((radio) => radio.checked)
+                .map((radio) => radio.value);
+            window.location.href = `./search?search=${searchText}&options=${selectedOptions.join(",")}`;
+        }
+    });
+
+    radios.forEach((radio) => {
+        radio.addEventListener("change", () => {
+            updateSelectedOptions();
+        });
+    });
+
+    function updateSelectedOptions() {
+        selectedOptions.innerHTML = "";
+
+        const checkedRadio = Array.from(radios).find((radio) => radio.checked);
+
+        if (checkedRadio) {
+            const ul = document.createElement("ul");
+            const li = document.createElement("li");
+            li.textContent = checkedRadio.parentElement.textContent.trim();
+            ul.appendChild(li);
+            selectedOptions.appendChild(ul);
+        }
+    }
+
+    const searchInputMain = document.getElementById("searchInputMain");
+
+    searchInputMain.addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+            const searchText = searchInputMain.value.toLowerCase();
+            const selectedOptions = Array.from(radios)
+                .filter((radio) => radio.checked)
+                .map((radio) => radio.value);
+
+            if (searchText.trim() !== "") {
+                window.location.href = `./search?search=${searchText}&options=${selectedOptions.join(",")}`;
+            } else {
+                alert("Vui lòng nhập từ khóa tìm kiếm trước khi ấn Enter.");
+            }
+        }
+    });
+</script>
+    
+
+
+    <ul class="navbar-nav  justify-content-end">
+        <li class="nav-item d-flex align-items-center">
+            <a href="javascript:;" class="nav-link text-body font-weight-bold px-0 login_logo">
+                <i class="fa fa-user-tie me-sm-1" aria-hidden="true"></i>
+                <span class="d-sm-inline d-none">Admin</span>
+            </a>
+        </li>
+        <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
+            <a href="./login/login.php" class="nav-link text-body p-0" id="iconNavbarSidenav">
+                <div class="sidenav-toggler-inner">
+                    <i class="sidenav-toggler-line"></i>
+                    <i class="sidenav-toggler-line"></i>
+                    <i class="sidenav-toggler-line"></i>
+                </div>
+            </a>
+        </li>
+        <li class="nav-item px-3 d-flex align-items-center">
+            <a href="" class="nav-link text-body p-0">
+                <i class="fa fa-sign-out" id= "logoutLink"
+                    aria-hidden="true"></i>
+            </a>
+       
+
+    </ul>
+    <script>
+                    document.getElementById("logoutLink").addEventListener("click", function (event) {
+                        event.preventDefault(); // Ngăn chặn hành vi mặc định của liên kết
+
+                        // Sử dụng AJAX để gọi hàm logout từ máy chủ
+                        var xhr = new XMLHttpRequest();
+                        var url = "./account/logout"; // Thêm tham số function với giá trị logout
+                        xhr.open("GET", url, true);
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState == 4) {
+                                console.log(xhr.status);
+                                console.log(xhr.responseText);
+
+                                if (xhr.status == 200) {
+                                    // Chuyển hướng đến trang đăng nhập sau khi đăng xuất thành công
+                                    window.location.href = "./account";
+                                }
+                            }
+                        };
+                        xhr.send();
+                    });
+
+
+    </script>
+</div>

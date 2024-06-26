@@ -1,0 +1,57 @@
+<?php
+class PatientComorbidityModel {
+    private $patientId;
+    private $comorbidityId;
+    private $description;
+  
+    public function __construct($patientId, $comorbidityId, $description) {
+      $this->patientId = $patientId;
+      $this->comorbidityId = $comorbidityId;
+      $this->description = $description;
+    }
+  
+    public function getPatientId() {
+      return $this->patientId;
+    }
+  
+    public function getComorbidityId() {
+      return $this->comorbidityId;
+    }
+  
+    public function getDescription() {
+      return $this->description;
+    }
+  
+    public function setPatientId($patientId) {
+      $this->patientId = $patientId;
+    }
+  
+    public function setComorbidityId($comorbidityId) {
+      $this->comorbidityId = $comorbidityId;
+    }
+  
+    public function setDescription($description) {
+      $this->description = $description;
+    }
+    public static function getPatientComorbidityById($id){
+      $data = [];
+      $sql = "select * from dbo.PatientComorbidity where patient_id ='".$id."';";
+      $db = new Database();
+      $result = $db->query($sql);
+      foreach($result as $row){
+        $comorbidity = new PatientComorbidityModel($row['patient_id'],$row['comorbidity_id'],  $row['describe']);
+        $data[] = $comorbidity;
+      }
+      return $data;
+     }
+     public function create(PatientComorbidityModel $comorbidity){
+      $data = [
+        "patient_id"=>$comorbidity->getPatientId(),
+       "comorbidity_id"=>$comorbidity->getComorbidityId(),
+       "describe"=>$comorbidity->getDescription(),
+      ];
+      $db = new Database();
+      $db->create("dbo.PatientComorbidity", $data);
+    }
+    }
+  
